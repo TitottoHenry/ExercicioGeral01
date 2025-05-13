@@ -30,4 +30,11 @@ public class NotaFiscal {
         return total;
     }
 
+    public void setLista(List<ItemProduto> lista) {
+        this.lista = lista;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

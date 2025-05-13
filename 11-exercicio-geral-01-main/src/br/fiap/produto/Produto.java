@@ -40,4 +40,8 @@ public class Produto {
     public double getValorUnitario() {
         return valorUnitario;
     }
+
+    public int getQuantidadeEmEstoque() {
+        return quantidadeEmEstoque;
+    }
 }

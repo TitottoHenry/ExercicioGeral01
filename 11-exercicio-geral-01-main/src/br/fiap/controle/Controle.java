@@ -1,8 +1,10 @@
 package br.fiap.controle;
 import NotaFiscal.NotaFiscal;
 import br.fiap.cliente.Cliente;
+import br.fiap.item.ItemProduto;
 import br.fiap.produto.Produto;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +40,48 @@ public class Controle {
         while(true) {
             try {
                 opcao = parseInt(showInputDialog(gerarMenu()));
+                switch (opcao){
+                    case 1:
+                        adicionarItem();
+                        break;
+                    case 3:
+                        finalizarCompra();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        showMessageDialog(null, "A opção deve ser um numero");
+                }
             }
             catch (NumberFormatException e){
                 showInputDialog(null, "A opção deve ser um número");
             }
         }
+    }
+
+    private void finalizarCompra(){
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        showMessageDialog(null, "total da compra R$ "+ df.format(nf.calcularTotal()));
+        nf.setStatus(true);
+    }
+
+    private void adicionarItem(){
+        int quantidade;
+        String produto=showInputDialog("qual o produto que sera comprado?");
+        for(Produto p : listaProduto){
+            if(p.getNome().equalsIgnoreCase(produto)){
+                quantidade = parseInt(showInputDialog("qual a quantidade que sera comprada?"));
+                if(p.getQuantidadeEmEstoque() >= quantidade){
+                    nf.adicionarItem(new ItemProduto(p, quantidade));
+                    p.debitarEstoque(quantidade);
+                    return;
+                }
+                else{
+                    showMessageDialog(null,"quantidade nao disponivel no estoque");
+                }
+            }
+        }
+        showMessageDialog(null, produto +" nao encontrado no estoque");
     }
 
     private Cliente pesquisar(){
